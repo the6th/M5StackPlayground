@@ -45,25 +45,16 @@ struct timeval now;
 
 //#define BEACON_UUID           "8ec76ea3-6668-48da-9866-75be8bc86f4d" // UUID 1 128-Bit (may use linux tool uuidgen or random numbers via https://www.uuidgenerator.net/)
 #define BEACON_UUID           "2f234454-cf6d-4a0f-adf2-f4911ba9ffa6" // UUID 1 128-Bit (may use linux tool uuidgen or random numbers via https://www.uuidgenerator.net/)
+#define BEACON_UUID_REV       "a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f"
 
-//UWPではこのように表示される。2バイト毎に逆になってる
-//a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f
-//MajorIDはbootcount + 1 の値がUnityでは取得される
 
-/*
-Hit!! a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f 0 20 -57
-Hit!! a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f 0 22 -57
-Hit!! a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f 0 27 -58
-Hit!! a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f 0 31 -57
-Hit!! a6ffa91b-91f4-f2ad-0f4a-6dcf5444232f 0 32 -58
-*/
 void setBeacon() {
 
   BLEBeacon oBeacon = BLEBeacon();
   oBeacon.setManufacturerId(0x4C00); // fake Apple 0x004C LSB (ENDIAN_CHANGE_U16!)
-  oBeacon.setProximityUUID(BLEUUID(BEACON_UUID));
-  oBeacon.setMajor((bootcount & 0xFFFF0000) >> 16);
-  oBeacon.setMinor(bootcount&0xFFFF);
+  oBeacon.setProximityUUID(BLEUUID(BEACON_UUID_REV));
+  oBeacon.setMajor(bootcount);
+  oBeacon.setMinor(bootcount+1);
   BLEAdvertisementData oAdvertisementData = BLEAdvertisementData();
   BLEAdvertisementData oScanResponseData = BLEAdvertisementData();
   
